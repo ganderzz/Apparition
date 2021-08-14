@@ -1,11 +1,14 @@
 import { PlayerComponent } from "../Components/PlayerComponent";
 import { PositionComponent } from "../Components/PositionComponent";
+import { VelocityComponent } from "../Components/VelocityComponent";
 import { Entity } from "../Entity/Entity";
 import { Keyboard } from "../Events/Keyboard";
 import { System } from "./Types";
 
+const gravity = 0.1;
+
 export class EventSystem implements System {
-  public run(entities: Entity[], { keyboard }): void {
+  public run(entities: Entity[], { delta, keyboard }): void {
     for (let i = 0; i < entities.length; i++) {
       const entity = entities[i];
       const player = entity.getComponent<PlayerComponent>("player");
@@ -15,19 +18,39 @@ export class EventSystem implements System {
       }
 
       const position = entity.getComponent<PositionComponent>("position");
+      const velocity = entity.getComponent<VelocityComponent>("velocity");
+
+      if (!position || !velocity) {
+        return;
+      }
 
       if (keyboard.isKeyDown(Keyboard.d)) {
-        position.x += 2;
+        velocity.x = player.movementSpeed;
+        player.facing = "right";
       }
-      if (keyboard.isKeyDown(Keyboard.a)) {
-        position.x -= 2;
+      else if (keyboard.isKeyDown(Keyboard.a)) {
+        velocity.x = -player.movementSpeed;
+        player.facing = "left";
+      }
+      else {
+        velocity.x = 0;
       }
       if (keyboard.isKeyDown(Keyboard.s)) {
-        position.y += 2;
+        velocity.y = 1;
       }
-      if (keyboard.isKeyDown(Keyboard.w)) {
-        position.y -= 2;
+      else if (keyboard.isKeyDown(Keyboard.w)) {
+        velocity.y = -1;
       }
+
+      velocity.x += player.acceleration.x * delta;
+      velocity.y += player.acceleration.y * delta * gravity;
+
+      if (position.y > 160) {
+        velocity.y = 0;
+      }
+
+      position.x += Math.floor(velocity.x * delta);
+      position.y += Math.floor(velocity.y * delta);
     }
   }
 }

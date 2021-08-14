@@ -37,12 +37,12 @@ export default class Crater {
     const now = Date.now();
     const delta = now - this.previousTime;
 
+    for (let i = 0; i < systems.length; i++) {
+      systems[i].run(entities, { delta, context: this._context, keyboard: this._keyboard });
+    }
+
     if (delta > this.interval) {
       this.previousTime = now - delta % this.interval;
-
-      for (let i = 0; i < systems.length; i++) {
-        systems[i].run(entities, { context: this._context, keyboard: this._keyboard });
-      }
     }
   };
 
