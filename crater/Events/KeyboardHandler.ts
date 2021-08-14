@@ -1,6 +1,6 @@
 import { Keyboard } from "./Keyboard";
 
-export default class KeyboardHandler {
+export class KeyboardHandler {
   public constructor() {
     window.addEventListener("keypress", this.handleKeyDown);
     window.addEventListener("keyup", this.reset);

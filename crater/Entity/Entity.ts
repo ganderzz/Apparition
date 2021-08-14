@@ -1,22 +1,25 @@
-function generateUniqueId(id = 0) {
-    return function () {
-        return id++;
-    }
-}(0);
-
-type Component = {
-    type: string;
-};
+import { Component } from "../Components/Types";
+import { generateUniqueId } from "../Utils/Utils";
 
 export class Entity {
     public id = generateUniqueId();
     #components: Component[] = [];
 
-    public addComponent(component: Component) {
+    public addComponent(component: Component): this {
         this.#components.push(component);
+
+        return this;
     }
 
-    public getComponents() {
+    public removeComponent(componentType: string) {
+      this.#components = this.#components.filter(item => item.type !== componentType);
+    }
+
+    public get getComponents() {
         return this.#components;
+    }
+
+    public getComponent<T extends Component>(componentType: string): T | undefined {
+      return this.#components.find(c => c.type === componentType) as T | undefined;
     }
 }

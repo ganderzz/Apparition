@@ -2,12 +2,25 @@
     <head>
         <meta charset="utf-8">
         <style>
+          canvas {
+            display: block;
+            width: 640px;
+            height: 480px;
+            margin: 20px auto;
+            image-rendering: optimizeSpeed; 
+            image-rendering: -moz-crisp-edges;         
+            image-rendering: -webkit-optimize-contrast; 
+            image-rendering: -o-crisp-edges;           
+            image-rendering: crisp-edges;              
+            -ms-interpolation-mode: nearest-neighbor;
 
+            background: #5d576b;
+          }
         </style>
     </head>
     <body>
 
-        <canvas id="canvas"></canvas>
+        <canvas width="320" height="230" id="canvas"></canvas>
 
         <script type="module" src="./crater/index.ts"></script>
     </body>

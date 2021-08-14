@@ -1,10 +1,7 @@
 import Context from "./Context/Context";
-import KeyboardHandler from "./Events/KeyboardHandler";
-import { IShape } from "./Shapes";
-
-const generateUniqueId = ((i) => {
-  return () => i++;
-})(0);
+import { Entity } from "./Entity/Entity";
+import { KeyboardHandler } from "./Events/KeyboardHandler";
+import { System } from "./Systems/Types";
 
 export default class Crater {
   public constructor(canvas: HTMLCanvasElement) {
@@ -16,76 +13,42 @@ export default class Crater {
     }
 
     this._context = new Context(canvas.getContext("2d"));
-    this._keyHandler = new KeyboardHandler();
-  }
-
-  /**
-   * Handle disposing of any memory
-   */
-  public dispose = () => {
-    this._keyHandler.dispose();
+    this._keyboard = new KeyboardHandler();
   }
 
   /**
    * Start and handle a render loop
    */
-  public runEventLoop = (
-    action: (
-      events: KeyboardHandler,
-      deltaTime: number
-    ) => void
+  public run = (
+    systems: System[],
+    entities: Entity[]
   ) => {
     requestAnimationFrame(() =>
-      this.runAllEvents(() => action(this._keyHandler, 0))
+      this.runAllEvents(systems, entities)
     );
   };
 
   private runAllEvents = (
-    action: (
-      events: KeyboardHandler,
-      deltaTime: number
-    ) => void
+    systems: System[],
+    entities: Entity[]
   ) => {
-    requestAnimationFrame(() => this.runAllEvents(action));
+    requestAnimationFrame(() => this.runAllEvents(systems, entities));
 
     const now = Date.now();
     const delta = now - this.previousTime;
 
-    if (action) {
-      action(this._keyHandler, delta);
-    }
-
     if (delta > this.interval) {
       this.previousTime = now - delta % this.interval;
-      this._context.clearScreen();
 
-      this._objects.forEach(elem => {
-        this.render(elem);
-      });
+      for (let i = 0; i < systems.length; i++) {
+        systems[i].run(entities, { context: this._context, keyboard: this._keyboard });
+      }
     }
   };
 
-  public render(elem: IShape) {
-    const ctx = this._context.context;
-    elem.clearArea(ctx);
-    elem.draw(ctx);
-  }
-
-  /**
-   * Add a shape to the canvas
-   * 
-   * @param shape 
-   */
-  public add(shape: IShape) {
-    this._objects.set(`${generateUniqueId()}`, shape);
-    this.render(shape);
-  }
-
   private readonly _context: Context;
-  private readonly _keyHandler: KeyboardHandler;
+  private readonly _keyboard: KeyboardHandler;
 
   private previousTime: number = Date.now();
-  private interval: number = 1000 / 30;
-
-  private _objects = new Map<string, IShape>();
+  private interval: number = 1000 / 30; // 30 frames per second
 }

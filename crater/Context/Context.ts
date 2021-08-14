@@ -7,6 +7,14 @@ export default class Context {
         shape.draw(this.context);
     }
 
+    public addImage(image: HTMLImageElement, x: number = 0, y: number = 0) {
+      if (!image) {
+        return;
+      }
+      
+      this.context.drawImage(image, x, y);
+    }
+
     public clearScreen() {
         const canvas =this.context.canvas;
         this.context.clearRect(0, 0, canvas.width, canvas.height);
