@@ -11,6 +11,7 @@ import { RenderSystem } from "./Systems/RenderSystem";
 import { PlayerComponent } from "./Components/PlayerComponent";
 import { EventSystem } from "./Systems/EventSystem";
 import { VelocityComponent } from "./Components/VelocityComponent";
+import { AnimationSystem } from "./Systems/AnimationSystem";
 
 window.onload = () => {
     const canvas: HTMLCanvasElement = document.querySelector("#canvas");
@@ -25,8 +26,9 @@ window.onload = () => {
 
     const renderSystem = new RenderSystem();
     const eventSystem = new EventSystem();
+    const animationSystem = new AnimationSystem();
 
-    const systems = [renderSystem, eventSystem];
+    const systems = [animationSystem, renderSystem, eventSystem];
     const entities = [player];
 
     crater.run(systems, entities);

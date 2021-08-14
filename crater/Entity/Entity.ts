@@ -3,6 +3,7 @@ import { generateUniqueId } from "../Utils/Utils";
 
 export class Entity {
     public id = generateUniqueId();
+
     #components: Component[] = [];
 
     public addComponent(component: Component): this {
@@ -19,7 +20,7 @@ export class Entity {
         return this.#components;
     }
 
-    public getComponent<T extends Component>(componentType: string): T | undefined {
-      return this.#components.find(c => c.type === componentType) as T | undefined;
+    public getComponent<T extends Component>(component: string): T | undefined {
+      return this.#components.find(c => c.type === component) as T | undefined;
     }
 }

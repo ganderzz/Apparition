@@ -5,13 +5,6 @@ import { System } from "./Systems/Types";
 
 export default class Crater {
   public constructor(canvas: HTMLCanvasElement) {
-    if (!canvas || !canvas.getContext) {
-      console.error(
-        `Invalid canvas element passed into the constructor of Crater.`
-      );
-      return;
-    }
-
     this._context = new Context(canvas.getContext("2d"));
     this._keyboard = new KeyboardHandler();
   }
@@ -37,12 +30,12 @@ export default class Crater {
     const now = Date.now();
     const delta = now - this.previousTime;
 
-    for (let i = 0; i < systems.length; i++) {
-      systems[i].run(entities, { delta, context: this._context, keyboard: this._keyboard });
-    }
-
     if (delta > this.interval) {
-      this.previousTime = now - delta % this.interval;
+      this.previousTime = now - delta % this.interval;    
+      
+      for (let i = 0; i < systems.length; i++) {
+        systems[i].run(entities, { delta, context: this._context, keyboard: this._keyboard });
+      }
     }
   };
 

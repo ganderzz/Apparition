@@ -7,6 +7,7 @@ export class PlayerComponent implements Component
   public acceleration = { x: 0, y: 0};
   public mass = 0.2;
   public radius = 15;
+  public isOnGround = false;
 
   public facing: "left" | "right" = "right";
 }

@@ -25,17 +25,6 @@ export class RenderSystem implements System {
       }
 
       context.addImage(sprite.currentFrame, position.x ?? 0, position?.y, player?.facing === "left");
-      
-      if (delta < 36) {
-        return;
-      }
-
-      const velocity = entity.getComponent<VelocityComponent>("velocity");
-      if (velocity?.x !== 0) {
-        sprite.incrementFrame();
-      } else {
-        sprite.frame = 0;
-      }
     }
   }
 }

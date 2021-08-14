@@ -10,6 +10,7 @@ function loadImage(url): Promise<HTMLImageElement> {
 export class SpriteComponent implements Component
 {
   public type = "sprite";
+
   #images: HTMLImageElement[] = [];
   #frame = 0;
 

@@ -35,19 +35,19 @@ export class EventSystem implements System {
       else {
         velocity.x = 0;
       }
-      if (keyboard.isKeyDown(Keyboard.s)) {
-        velocity.y = 1;
-      }
-      else if (keyboard.isKeyDown(Keyboard.w)) {
-        velocity.y = -1;
+
+      if (player.isOnGround && keyboard.isKeyDown(Keyboard.w)) {
+        velocity.y -= 0.4;
+        player.isOnGround = false;
+      } else if (position.y > 160) {
+        velocity.y = 0;
+        player.isOnGround = true;
+      } else if (!player.isOnGround) {
+        velocity.y += 0.05;
       }
 
       velocity.x += player.acceleration.x * delta;
       velocity.y += player.acceleration.y * delta * gravity;
-
-      if (position.y > 160) {
-        velocity.y = 0;
-      }
 
       position.x += Math.floor(velocity.x * delta);
       position.y += Math.floor(velocity.y * delta);
