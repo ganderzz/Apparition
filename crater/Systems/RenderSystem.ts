@@ -1,7 +1,6 @@
-import { PlayerComponent } from "../Components/PlayerComponent";
+import { DirectionComponent } from "../Components/DirectionComponent";
 import { PositionComponent } from "../Components/PositionComponent";
 import { SpriteComponent } from "../Components/SpriteComponent";
-import { VelocityComponent } from "../Components/VelocityComponent";
 import { Entity } from "../Entity/Entity";
 import { System } from "./Types";
 
@@ -11,20 +10,16 @@ export class RenderSystem implements System {
 
     for (let i = 0; i < entities.length; i++) {
       const entity = entities[i];
-      const sprite = entity.getComponent<SpriteComponent>("sprite");
+      const sprite = entity.getComponent<SpriteComponent>(SpriteComponent.type);
 
       if (!sprite) {
         continue;
       }
 
-      const position = entity.getComponent<PositionComponent>("position");
-      const player = entity.getComponent<PlayerComponent>("player");
+      const position = entity.getComponent<PositionComponent>(PositionComponent.type);
+      const direction = entity.getComponent<DirectionComponent>(DirectionComponent.type);
 
-      if (!player) {
-        return;
-      }
-
-      context.addImage(sprite.currentFrame, position.x ?? 0, position?.y, player?.facing === "left");
+      context.addImage(sprite.currentFrame, position.x ?? 0, position?.y, direction?.facing === "left" ?? false);
     }
   }
 }

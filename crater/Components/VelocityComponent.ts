@@ -1,8 +1,7 @@
 import { Component } from "./Types";
 
-export class VelocityComponent implements Component
-{
-  public type = "velocity";
+export class VelocityComponent implements Component {
+  public static type = 3;
   public x: number;
   public y: number;
 

@@ -1,3 +1,3 @@
-export type Component = {
-  type: string;
-};
+export abstract class Component {
+  static type: number;
+}

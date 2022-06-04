@@ -1,3 +1,4 @@
+import { DirectionComponent } from "../Components/DirectionComponent";
 import { PlayerComponent } from "../Components/PlayerComponent";
 import { PositionComponent } from "../Components/PositionComponent";
 import { VelocityComponent } from "../Components/VelocityComponent";
@@ -11,14 +12,15 @@ export class EventSystem implements System {
   public run(entities: Entity[], { delta, keyboard }): void {
     for (let i = 0; i < entities.length; i++) {
       const entity = entities[i];
-      const player = entity.getComponent<PlayerComponent>("player");
+      const player = entity.getComponent<PlayerComponent>(PlayerComponent.type);
 
       if (!player) {
         continue;
       }
 
-      const position = entity.getComponent<PositionComponent>("position");
-      const velocity = entity.getComponent<VelocityComponent>("velocity");
+      const position = entity.getComponent<PositionComponent>(PositionComponent.type);
+      const velocity = entity.getComponent<VelocityComponent>(VelocityComponent.type);
+      const direction = entity.getComponent<DirectionComponent>(DirectionComponent.type);
 
       if (!position || !velocity) {
         return;
@@ -26,13 +28,11 @@ export class EventSystem implements System {
 
       if (keyboard.isKeyDown(Keyboard.d)) {
         velocity.x = player.movementSpeed;
-        player.facing = "right";
-      }
-      else if (keyboard.isKeyDown(Keyboard.a)) {
+        direction.facing = "right";
+      } else if (keyboard.isKeyDown(Keyboard.a)) {
         velocity.x = -player.movementSpeed;
-        player.facing = "left";
-      }
-      else {
+        direction.facing = "left";
+      } else {
         velocity.x = 0;
       }
 

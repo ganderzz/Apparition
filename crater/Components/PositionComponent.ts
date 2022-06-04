@@ -1,8 +1,7 @@
 import { Component } from "./Types";
 
-export class PositionComponent implements Component
-{
-  public type = "position";
+export class PositionComponent implements Component {
+  public static type = 1;
   public x: number;
   public y: number;
 

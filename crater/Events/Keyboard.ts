@@ -1,6 +1,7 @@
 export enum Keyboard {
-    a = "a",
-    d = "d",
-    s = "s",
-    w = "w",
+  a = "a",
+  d = "d",
+  s = "s",
+  w = "w",
+  space = "space",
 }

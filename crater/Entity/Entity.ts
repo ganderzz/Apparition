@@ -2,25 +2,25 @@ import { Component } from "../Components/Types";
 import { generateUniqueId } from "../Utils/Utils";
 
 export class Entity {
-    public id = generateUniqueId();
+  public id = generateUniqueId();
 
-    #components: Component[] = [];
+  #components: Component[] = [];
 
-    public addComponent(component: Component): this {
-        this.#components.push(component);
+  public addComponent(component: Component): this {
+    this.#components[component.constructor.type] = component;
 
-        return this;
-    }
+    return this;
+  }
 
-    public removeComponent(componentType: string) {
-      this.#components = this.#components.filter(item => item.type !== componentType);
-    }
+  public removeComponent(componentType: string) {
+    this.#components = this.#components.filter((item) => component.constructor.type !== componentType);
+  }
 
-    public get getComponents() {
-        return this.#components;
-    }
+  public get getComponents() {
+    return this.#components;
+  }
 
-    public getComponent<T extends Component>(component: string): T | undefined {
-      return this.#components.find(c => c.type === component) as T | undefined;
-    }
+  public getComponent<T extends Component>(componentType: number): T | undefined {
+    return this.#components[componentType] as T | undefined;
+  }
 }

@@ -1,37 +1,38 @@
 import { Component } from "./Types";
 
 function loadImage(url): Promise<HTMLImageElement> {
-  return new Promise(r => { 
-    let i = new Image(); 
-    i.onload = (() => r(i)); i.src = url; 
+  return new Promise((r) => {
+    let i = new Image();
+    i.onload = () => r(i);
+    i.src = url;
   });
 }
 
-export class SpriteComponent implements Component
-{
-  public type = "sprite";
+export class SpriteComponent implements Component {
+  public static type = 2;
 
-  #images: HTMLImageElement[] = [];
+  #movementImages: HTMLImageElement[] = [];
+  #idleImages: HTMLImageElement[] = [];
   #frame = 0;
 
-  public constructor(frames: string[]) {
+  public constructor(frames: { movement: string[]; idle: string[] }) {
     this.loadAssets(frames);
   }
 
-  public async loadAssets(frames: string[]) {
-    for (let i = 0; i < frames.length; i++) {
-      const img = await loadImage(frames[i]);
-      
-      this.#images.push(img);
+  public async loadAssets(frames: { movement: string[]; idle: string[] }) {
+    for (let i = 0; i < frames.movement.length; i++) {
+      const img = await loadImage(frames.movement[i]);
+
+      this.#movementImages.push(img);
     }
   }
 
   public get first() {
-    return this.#images[0];
+    return this.#movementImages[0];
   }
 
   public get currentFrame() {
-    return this.#images[this.#frame];
+    return this.#movementImages[this.#frame];
   }
 
   public set frame(frame: number) {
@@ -39,6 +40,6 @@ export class SpriteComponent implements Component
   }
 
   public incrementFrame() {
-    this.#frame = this.#frame < this.#images.length -1 ? this.#frame + 1 : 0;
+    this.#frame = this.#frame < this.#movementImages.length - 1 ? this.#frame + 1 : 0;
   }
 }
